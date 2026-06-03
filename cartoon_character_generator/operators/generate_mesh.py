@@ -19,7 +19,11 @@ class CCG_OT_GenerateMesh(bpy.types.Operator):
             from ..core.silhouette import extract_mask
             from ..core.contour import find_largest_contour, simplify_contour
             from ..core.mesh_builder import create_extruded_mesh_from_contour
-            from ..core.body_analyzer import find_body_landmarks, split_body_masks
+            from ..core.body_analyzer import (
+                find_body_landmarks,
+                split_body_masks,
+                save_landmark_debug_image
+            )
 
             mask = extract_mask(image_path)
             print("Mask shape:", mask.shape)
@@ -27,6 +31,8 @@ class CCG_OT_GenerateMesh(bpy.types.Operator):
 
             landmarks = find_body_landmarks(mask)
             print("Detected landmarks:", landmarks)
+            
+            save_landmark_debug_image(mask, landmarks, image_path)
 
             parts = split_body_masks(mask, landmarks)
 
